@@ -15,7 +15,6 @@ const int cols = 20;
 // STOP  - Matrix Global Variables
 
 
-
 // START - Classes
 class Snake {
 private: // Private member variables
