@@ -103,6 +103,7 @@ int main(int argc, char* argv[]) {
 
     int result = SDL_Init(SDL_INIT_EVERYTHING);
     if (result < 0) return -1;
+    const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL); // Current Key State (what is being pressed)
     // STOP  - Init. Local Variables
 
     // START - Error Checking
@@ -129,6 +130,16 @@ int main(int argc, char* argv[]) {
 
     // START - Game Loop
     while (!quit) { // game loop
+        SDL_PumpEvents(); // Update the state of all keys
+
+        // START - Movement Keys
+        if (currentKeyStates[SDL_SCANCODE_A] && testSprite.getX() > 0) { testSprite.goLeft(); }
+        if (currentKeyStates[SDL_SCANCODE_D] && testSprite.getX() < w - testSprite.getW()) { testSprite.goRight(); }
+        if (currentKeyStates[SDL_SCANCODE_W] && testSprite.getY() > 0) { testSprite.goUp(); }
+        if (currentKeyStates[SDL_SCANCODE_S] && testSprite.getY() < h - testSprite.getH()) { testSprite.goDown(); }
+        // STOP  - Movement Keys
+
+        // START - System Keys
         while ( SDL_PollEvent( &event ) != 0 ) { // If an event is encountered
             switch (event.type) { // Logic Flow using switch cases
                 case SDL_WINDOWEVENT_SIZE_CHANGED:  // Handles window size changing
@@ -155,26 +166,11 @@ int main(int argc, char* argv[]) {
                             }
                             break; // END SDLK_F1 CASE
                         // STOP  - System/Window Changes From Key Press
-                        case SDLK_a: // a key makes sprite go left
-                            if ( testSprite.getX() <= 0) { continue; } // Ignore 'a' key press if at left barrier
-                            else { testSprite.goLeft(); } // Call sprite go left function
-                            break;
-                        case SDLK_d: // d key makes sprite go right
-                            if ( testSprite.getX() >= w - testSprite.getW()) {  continue; } // Ignore 'd' key press if at right barrier
-                            else { testSprite.goRight(); } // Call sprite go left function
-                            break;
-                        case SDLK_w: // w key makes sprite go up
-                            if ( testSprite.getY() <= 0 ) {  continue; } // Ignore 'w' key press if at top barrier
-                            else { testSprite.goUp(); } // Call sprite go left function
-                            break;
-                        case SDLK_s: // s key makes sprite go down
-                            if ( testSprite.getY() >= h - testSprite.getH()) {  continue; } // Ignore 'w' key press if at top barrier
-                            else { testSprite.goDown(); } // Call sprite go left function
-                            break;
                     }
                     break; // END SDL_KEYUP CASE
             } // END SWITCH CASE LOGIC FLOW
         } // END OF CHECKING FOR KEY PRESSES
+        // STOP  - System Keys
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Makes the screen blue with full opacity
         SDL_RenderClear(renderer);
