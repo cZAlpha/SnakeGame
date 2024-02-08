@@ -8,6 +8,7 @@
 // Used: https://www.youtube.com/watch?v=N5CZLSVU0DA
 // Possibly Useful for Mac: https://www.youtube.com/watch?v=gV-_p-r866o
 
+
 SDL_Window* window;
 SDL_Renderer* renderer;
 
