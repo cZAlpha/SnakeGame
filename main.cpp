@@ -25,7 +25,6 @@ private:
     SDL_Texture* texture;
     SDL_Rect rect;
     int movementAmount = 50; // number of pixels to move by when moving
-
 public:
     TestSprite(SDL_Renderer* renderer) {
         // Create a surface for the sprite
@@ -35,11 +34,9 @@ public:
             return; // Returns early to stop the constructor from causing further errors
         }
 
-        // Fill the surface with green color
-        SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 255, 0));
+        SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 50, 0)); // Fill the surface with green color
 
-        // Convert the surface to a texture
-        texture = SDL_CreateTextureFromSurface(renderer, surface);
+        texture = SDL_CreateTextureFromSurface(renderer, surface); // Convert the surface to a texture
         if (texture == nullptr) {
             std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
             SDL_FreeSurface(surface);
@@ -55,22 +52,17 @@ public:
         SDL_FreeSurface(surface); // Free the surface as it's no longer needed
     }
 
-    ~TestSprite() {
-        SDL_DestroyTexture(texture); // Cleanup texture
-    }
+    ~TestSprite() { SDL_DestroyTexture(texture); } // Cleanup texture
 
     // START - Movement Functions
-    void goLeft() { rect.x -= movementAmount; } // Decriments the rectangle's x value
+    void goLeft() { rect.x -= movementAmount; } // Decrements the rectangle's x value
     void goRight() { rect.x += movementAmount; } // Increments the rectangle's x value
     void goDown() { rect.y += movementAmount; } // Increments the rectangle's y value (ASSUMING: incrementing y value makes it go up)
     void goUp() { rect.y -= movementAmount; } // Decrements the rectangle's y value (ASSUMING: decrementing y value makes it go up)
     // STOP  - Movement Functions
 
     // START - General Purpose Functions
-    void render(SDL_Renderer* renderer) {
-        // Render the texture
-        SDL_RenderCopy(renderer, texture, NULL, &rect);
-    }
+    void render(SDL_Renderer* renderer) { SDL_RenderCopy(renderer, texture, NULL, &rect); } // Render the texture
 
     // Getters
     int getX() { return rect.x; }
@@ -99,7 +91,8 @@ int main(int argc, char* argv[]) {
 
     int w = 800;
     int h = 600;
-    int windowed = 1;
+    int windowed = 1; // Window flag, used for toggle window/fullscreen
+    int test = 1; // Test flag, used to toggle restricted movement
 
     int result = SDL_Init(SDL_INIT_EVERYTHING);
     if (result < 0) return -1;
@@ -132,12 +125,14 @@ int main(int argc, char* argv[]) {
     while (!quit) { // game loop
         SDL_PumpEvents(); // Update the state of all keys
 
-        // START - Movement Keys
-        if (currentKeyStates[SDL_SCANCODE_A] && testSprite.getX() > 0) { testSprite.goLeft(); } // LEFT
-        if (currentKeyStates[SDL_SCANCODE_D] && testSprite.getX() < w - testSprite.getW()) { testSprite.goRight(); } // RIGHT
-        if (currentKeyStates[SDL_SCANCODE_W] && testSprite.getY() > 0) { testSprite.goUp(); }   // UP
-        if (currentKeyStates[SDL_SCANCODE_S] && testSprite.getY() < h - testSprite.getH()) { testSprite.goDown(); } // DOWN
-        // STOP  - Movement Keys
+        if (test == 1) { // Flag for checking if movement should be unrestricted (1: Unrestricted movement, 0: Normal movement)
+            // START - Unrestricted Movement Keys
+            if (currentKeyStates[SDL_SCANCODE_A] && testSprite.getX() > 0) { testSprite.goLeft(); } // LEFT
+            if (currentKeyStates[SDL_SCANCODE_D] && testSprite.getX() < w - testSprite.getW()) { testSprite.goRight(); } // RIGHT
+            if (currentKeyStates[SDL_SCANCODE_W] && testSprite.getY() > 0) { testSprite.goUp(); }   // UP
+            if (currentKeyStates[SDL_SCANCODE_S] && testSprite.getY() < h - testSprite.getH()) { testSprite.goDown(); } // DOWN
+            // STOP  - Unrestricted Movement Keys
+        }
 
         // START - System Keys
         while ( SDL_PollEvent( &event ) != 0 ) { // If an event is encountered
@@ -157,14 +152,27 @@ int main(int argc, char* argv[]) {
                             quit = 1;
                             break; // END SDLK_ESCAPE CASE
                         case SDLK_F1: // If 'F1' key is pressed, go into fullscreen mode
-                            // THE FOLLOWING CODE CAUSES THE SCREEN TO BUG THE FUCK OUT (Only tested on OSX)
+                            // THE FOLLOWING CODE CAUSES THE SCREEN TO BUG THE FUCK OUT (Only  n OSX)
                             windowed = !windowed;
-                            if (windowed) {
-                                SDL_SetWindowFullscreen(window, SDL_FALSE);
-                            } else {
-                                SDL_SetWindowFullscreen(window, SDL_TRUE);
-                            }
+                            if (windowed) { SDL_SetWindowFullscreen(window, SDL_FALSE); }
+                            else { SDL_SetWindowFullscreen(window, SDL_TRUE); }
                             break; // END SDLK_F1 CASE
+                        case SDLK_a: // If 'a' key is pressed,
+                            if (testSprite.getX() > 0 && test == 0) { testSprite.goLeft(); } // LEFT
+                            break;
+                        case SDLK_d: // If 'd' key is pressed,
+                            if (testSprite.getX() < w - testSprite.getW() && test == 0) { testSprite.goRight(); } // RIGHT
+                            break;
+                        case SDLK_w: // If 'w' key is pressed,
+                            if (testSprite.getY() > 0 && test == 0) { testSprite.goUp(); }   // UP
+                            break;
+                        case SDLK_s: // If 's' key is pressed,
+                            if (testSprite.getY() < h - testSprite.getH() && test == 0) { testSprite.goDown(); } // DOWN
+                            break;
+                        case SDLK_z: // If 'z' key is pressed,
+                            if (test == 0) { test = 1; }
+                            else { test = 0; }
+                            break;
                         // STOP  - System/Window Changes From Key Press
                     }
                     break; // END SDL_KEYUP CASE
@@ -172,7 +180,7 @@ int main(int argc, char* argv[]) {
         } // END OF CHECKING FOR KEY PRESSES
         // STOP  - System Keys
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Makes the screen blue with full opacity
+        SDL_SetRenderDrawColor(renderer, 20, 200, 20, 255); // Makes the screen blue with full opacity
         SDL_RenderClear(renderer);
 
         // Test Sprite
