@@ -19,4 +19,3 @@ endif()
 add_executable(Snake main.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY})
-
