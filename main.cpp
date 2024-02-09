@@ -32,7 +32,7 @@ public:
         SDL_Surface* surface = SDL_CreateRGBSurface(0, 10, 10, 32, 0, 0, 0, 0);
         if (surface == nullptr) {
             std::cerr << "Failed to create surface: " << SDL_GetError() << std::endl;
-            return;
+            return; // Returns early to stop the constructor from causing further errors
         }
 
         // Fill the surface with green color
@@ -133,10 +133,10 @@ int main(int argc, char* argv[]) {
         SDL_PumpEvents(); // Update the state of all keys
 
         // START - Movement Keys
-        if (currentKeyStates[SDL_SCANCODE_A] && testSprite.getX() > 0) { testSprite.goLeft(); }
-        if (currentKeyStates[SDL_SCANCODE_D] && testSprite.getX() < w - testSprite.getW()) { testSprite.goRight(); }
-        if (currentKeyStates[SDL_SCANCODE_W] && testSprite.getY() > 0) { testSprite.goUp(); }
-        if (currentKeyStates[SDL_SCANCODE_S] && testSprite.getY() < h - testSprite.getH()) { testSprite.goDown(); }
+        if (currentKeyStates[SDL_SCANCODE_A] && testSprite.getX() > 0) { testSprite.goLeft(); } // LEFT
+        if (currentKeyStates[SDL_SCANCODE_D] && testSprite.getX() < w - testSprite.getW()) { testSprite.goRight(); } // RIGHT
+        if (currentKeyStates[SDL_SCANCODE_W] && testSprite.getY() > 0) { testSprite.goUp(); }   // UP
+        if (currentKeyStates[SDL_SCANCODE_S] && testSprite.getY() < h - testSprite.getH()) { testSprite.goDown(); } // DOWN
         // STOP  - Movement Keys
 
         // START - System Keys
