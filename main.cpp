@@ -132,10 +132,10 @@ int main(int argc, char* argv[]) {
 
         if (test == 1) { // Flag for checking if movement should be unrestricted (1: Unrestricted movement, 0: Normal movement)
             // START - Unrestricted Movement Keys
-            if (currentKeyStates[SDL_SCANCODE_A] && testSprite.getX() > 0) { testSprite.goLeft(); } // LEFT
-            if (currentKeyStates[SDL_SCANCODE_D] && testSprite.getX() < w - testSprite.getW()) { testSprite.goRight(); } // RIGHT
-            if (currentKeyStates[SDL_SCANCODE_W] && testSprite.getY() > 0) { testSprite.goUp(); }   // UP
-            if (currentKeyStates[SDL_SCANCODE_S] && testSprite.getY() < h - testSprite.getH()) { testSprite.goDown(); } // DOWN
+                if (currentKeyStates[SDL_SCANCODE_A] && testSprite.getX() > 0) { testSprite.goLeft(); }                               // LEFT
+                if (currentKeyStates[SDL_SCANCODE_D] && testSprite.getX() < w - testSprite.getW()) { testSprite.goRight(); } // RIGHT
+                if (currentKeyStates[SDL_SCANCODE_W] && testSprite.getY() > 0) { testSprite.goUp(); }                                // UP
+                if (currentKeyStates[SDL_SCANCODE_S] && testSprite.getY() < h - testSprite.getH()) { testSprite.goDown(); } // DOWN
             // STOP  - Unrestricted Movement Keys
         }
 
@@ -185,22 +185,25 @@ int main(int argc, char* argv[]) {
         } // END OF CHECKING FOR KEY PRESSES
         // STOP  - System Keys
 
+        // START - Screen
         SDL_SetRenderDrawColor(renderer, 20, 200, 20, 255); // Makes the screen blue with full opacity
         SDL_RenderClear(renderer);
 
-        // Test Sprite
+        // TEST SPRITE
         testSprite.render(renderer); // Render the sprite
 
         SDL_RenderPresent(renderer);
-        SDL_Delay(fps); // updates every 10 ms which is
+        SDL_Delay(fps); // updates based on fps var, basically the amount of time before updating screen
+        // STOP  - Screen
     } // END OF GAME LOOP
     // STOP  - Game Loop
 
-    // Cleanup
+    // START - Cleanup
     CLEANUP_AND_QUIT:
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+    // STOP  - Cleanup
 
     return 0;
 }
