@@ -5,7 +5,6 @@
 // START - Imports
 #include <iostream>
 #include <SDL.h>
-#include "Apple.h"
 // STOP  - Imports
 
 // START - Namespaces
