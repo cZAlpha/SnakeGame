@@ -1,10 +1,11 @@
 //
-// Created by Noah Klaus on 2/1/24.
+// Created by cZAlpha on 2/1/24.
 //
 
 // START - Imports
 #include <iostream>
 #include <SDL.h>
+#include "Apple.h"
 // STOP  - Imports
 
 // START - Namespaces
@@ -77,6 +78,10 @@ public:
 int calculateMilliseconds(int desiredFPS) {
     return 1000 / desiredFPS;
 }
+
+// Need a function to ascertain whether the snake is colliding with an Apple so that you can add points
+// int isCollide( object one, object two ) { Returns 0 for false, 1 for true } // Preliminary Idea
+
 // STOP - Functions
 
 

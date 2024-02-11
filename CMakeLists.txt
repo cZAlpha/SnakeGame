@@ -16,6 +16,10 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin") # Mac
 endif()
 
 # Rest of Code
-add_executable(Snake main.cpp)
+add_executable(Snake main.cpp
+        Apple.cpp
+        Apple.h
+        Snake.cpp
+        Snake.h)
 
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY})
