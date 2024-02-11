@@ -18,33 +18,34 @@ Snake::Snake(int len, int x, int y) {
     this->y = y;
 }
 
-void Snake::setLength(int inputtedLength) {
-    if (inputtedLength >= 1) {
-        length = inputtedLength;
+    void Snake::setLength(int inputtedLength) {
+        if (inputtedLength >= 1) {
+            length = inputtedLength;
+        }
     }
-}
 
-void Snake::setLocation(int x, int y) {
-    this->x = x;
-    this->y = y;
-}
+    void Snake::setLocation(int x, int y) {
+        this->x = x;
+        this->y = y;
+    }
 
-int Snake::getLength() const {
-    return length;
-}
+    int Snake::getLength() const {
+        return length;
+    }
 
-void Snake::incrementLength() {
-    length++;
-}
+    void Snake::incrementLength() {
+        length++;
+    }
 
-int Snake::getLocation() const {
-    return x;
-}
+    int Snake::getLocation() const {
+        return x;
+    }
 
-int Snake::getY() const {
-    return y;
-}
+    int Snake::getY() const {
+        return y;
+    }
 
-bool Snake::isCollidingWith(const Apple& apple) const {
-    return x == apple.x && y == apple.y;
-}
+    bool Snake::isCollidingWith(const Apple& apple) const {
+        return x == apple.getX() && y == apple.getY(); // Use getter functions to access Apple's coordinates
+    }
+

@@ -6,21 +6,20 @@
 #define APPLE_H
 
 class Apple {
-    private:
-        int value; // Default value is 0
-        int x;      // X Coord
-        int y;      // Y Coord
+private:
+    int value;
+    int x;
+    int y;
 
-    public: // Public member functions
-        Apple(); // Default Constructor
-        Apple(int len, int x, int y); // Custom Constructor
-        void setValue(int inputtedValue); // Setter for value
-        void setLocation(int x, int y); // Setter for location
-        int getLength(); // Getter for length
-        void incrementLength(); // Increment length
-        int getLocation(); // Getter for x
-        int getY(); // Getter for y
+public:
+    Apple();
+    Apple(int len, int x, int y);
+    void setValue(int inputtedValue);
+    void setLocation(int x, int y);
+    int getLength();
+    void incrementLength();
+    int getX() const; // Add getter function for x coordinate
+    int getY() const; // Add getter function for y coordinate
 };
 
 #endif // APPLE_H
-

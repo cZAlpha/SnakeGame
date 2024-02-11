@@ -18,29 +18,29 @@ Apple::Apple(int len, int x, int y) {
     this->y = y;
 }
 
-void Apple::setValue(int inputtedValue) {
-    if (inputtedValue >= 1) {
-        value = inputtedValue;
+    void Apple::setValue(int inputtedValue) {
+        if (inputtedValue >= 1) {
+            value = inputtedValue;
+        }
     }
-}
 
-void Apple::setLocation(int x, int y) {
-    this->x = x;
-    this->y = y;
-}
+    void Apple::setLocation(int x, int y) {
+        this->x = x;
+        this->y = y;
+    }
 
-int Apple::getLength() {
-    return value;
-}
+    int Apple::getLength() {
+        return value;
+    }
 
-void Apple::incrementLength() {
-    value++;
-}
+    void Apple::incrementLength() {
+        value++;
+    }
 
-int Apple::getLocation() {
-    return x;
-}
+    int Apple::getX() const { // Implement getter function for x coordinate
+        return x;
+    }
 
-int Apple::getY() {
-    return y;
-}
+    int Apple::getY() const { // Implement getter function for y coordinate
+        return y;
+    }
