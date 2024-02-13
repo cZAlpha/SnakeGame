@@ -29,12 +29,13 @@ private:
 
 public:
     TestSprite(const char* imagePath) {
-        // Load image as texture
+        // Load image as texture ; Check for null pointer -> Log error
         SDL_Surface* surface = SDL_LoadBMP(imagePath);
         if (surface == nullptr) {
             cerr << "Failed to load image: " << SDL_GetError() << endl;
             return;
         }
+        // Create texture for sprite surface ; Check for null pointer -> Log error
         texture = SDL_CreateTextureFromSurface(renderer, surface);
         if (texture == nullptr) {
             cerr << "Failed to create texture: " << SDL_GetError() << endl;
@@ -42,11 +43,14 @@ public:
             return;
         }
 
+        // Ascertain the width and height of BMP file from 'imagePath' in args
+        int BMPwidth = surface->w;
+        int BMPheight = surface->h;
         // Set the rectangle position and size
         rect.x = 0;
         rect.y = 0;
-        rect.w = 50;
-        rect.h = 50;
+        rect.w = BMPwidth;
+        rect.h = BMPheight;
 
         SDL_FreeSurface(surface);
     }
