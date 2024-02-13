@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
     // STOP  - Error Checking
 
     // START - Sprites
-    Sprite testSprite("/Users/nbklaus21/Desktop/testSprite.bmp", renderer); // Test Sprite
+    Sprite testSprite("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/testSprite.bmp", renderer); // Test Sprite
     // STOP  - Sprites
 
     // START - Game Loop

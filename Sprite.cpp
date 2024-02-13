@@ -22,7 +22,6 @@ Sprite::Sprite() {
     rect.w = 0;
     rect.h = 0;
     id = std::rand();
-    // Default, nothing
 }
 
 Sprite::Sprite(const char* imagePath, SDL_Renderer* renderer) {
