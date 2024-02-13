@@ -28,7 +28,7 @@ private:
     int movementAmount = 50;
 
 public:
-    TestSprite(SDL_Renderer* renderer, const char* imagePath) {
+    TestSprite(const char* imagePath) {
         // Load image as texture
         SDL_Surface* surface = SDL_LoadBMP(imagePath);
         if (surface == nullptr) {
@@ -117,7 +117,7 @@ int main(int argc, char* argv[]) {
 
     // START - Sprites
     // Test Sprite
-    TestSprite testSprite(renderer, "/Users/nbklaus21/Desktop/testSprite.bmp");
+    TestSprite testSprite("/Users/nbklaus21/Desktop/testSprite.bmp");
     // STOP  - Sprites
 
     // START - Game Loop

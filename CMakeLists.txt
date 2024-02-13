@@ -15,11 +15,15 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin") # Mac
     include_directories("/usr/local/include/SDL2") # Adjust this path according to your installation
 endif()
 
-# Rest of Code
-add_executable(Snake main.cpp
+# Files to make the executable 'Snake'
+add_executable(Snake
+        main.cpp
         Apple.cpp
         Apple.h
         Snake.cpp
-        Snake.h)
+        Snake.h
+        Sprite.cpp
+        Sprite.h
+        )
 
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY})
