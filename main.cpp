@@ -5,9 +5,9 @@
 // START - Imports
 #include <iostream>
 #include <SDL.h>
+#include "Sprite.h"
 #include "Apple.h"
 #include "Snake.h"
-#include "Sprite.h"
 // STOP  - Imports
 
 // START - Namespaces
@@ -21,67 +21,8 @@ int FPS = 60;
 // STOP  - Global Variables
 
 
-
-// START - Classes
-// Classes
-class TestSprite {
-private:
-    SDL_Texture* texture;
-    SDL_Rect rect;
-    int movementAmount = 50;
-
-public:
-    TestSprite(const char* imagePath) {
-        // Load image as texture ; Check for null pointer -> Log error
-        SDL_Surface* surface = SDL_LoadBMP(imagePath);
-        if (surface == nullptr) {
-            cerr << "Failed to load image: " << SDL_GetError() << endl;
-            return;
-        }
-        // Create texture for sprite surface ; Check for null pointer -> Log error
-        texture = SDL_CreateTextureFromSurface(renderer, surface);
-        if (texture == nullptr) {
-            cerr << "Failed to create texture: " << SDL_GetError() << endl;
-            SDL_FreeSurface(surface);
-            return;
-        }
-
-        // Ascertain the width and height of BMP file from 'imagePath' in args
-        int BMPwidth = surface->w;
-        int BMPheight = surface->h;
-        // Set the rectangle position and size
-        rect.x = 0;
-        rect.y = 0;
-        rect.w = BMPwidth;
-        rect.h = BMPheight;
-
-        SDL_FreeSurface(surface);
-    }
-
-    ~TestSprite() { SDL_DestroyTexture(texture); }
-
-    void render(SDL_Renderer* renderer) { SDL_RenderCopy(renderer, texture, NULL, &rect); }
-
-    // START - Movement Functions
-    void goLeft() { rect.x -= movementAmount; } // Decrements the rectangle's x value
-    void goRight() { rect.x += movementAmount; } // Increments the rectangle's x value
-    void goDown() { rect.y += movementAmount; } // Increments the rectangle's y value (ASSUMING: incrementing y value makes it go up)
-    void goUp() { rect.y -= movementAmount; } // Decrements the rectangle's y value (ASSUMING: decrementing y value makes it go up)
-    // STOP  - Movement Functions
-
-    // Getters
-    int getX() { return rect.x; }
-    int getY() { return rect.y; }
-    int getW() { return rect.w; }
-    int getH() { return rect.h; }
-    // STOP  - General Purpose Functions
-};
-// STOP  - Classes
-
 // START - Functions
-int calculateMilliseconds(int desiredFPS) {
-    return 1000 / desiredFPS;
-}
+int calculateMilliseconds(int desiredFPS) { return 1000 / desiredFPS; }
 // STOP - Functions
 
 
@@ -123,21 +64,12 @@ int main(int argc, char* argv[]) {
     // STOP  - Error Checking
 
     // START - Sprites
-    TestSprite testSprite("/Users/nbklaus21/Desktop/testSprite.bmp"); // Test Sprite
+    Sprite testSprite("/Users/nbklaus21/Desktop/testSprite.bmp", renderer); // Test Sprite
     // STOP  - Sprites
 
     // START - Game Loop
     while (!quit) { // game loop
         SDL_PumpEvents(); // Update the state of all keys
-
-        if (test == 1) { // Flag for checking if movement should be unrestricted (1: Unrestricted movement, 0: Normal movement)
-            // START - Unrestricted Movement Keys
-            if (currentKeyStates[SDL_SCANCODE_A] && testSprite.getX() > 0) { testSprite.goLeft(); } // LEFT
-            if (currentKeyStates[SDL_SCANCODE_D] && testSprite.getX() < w - testSprite.getW()) { testSprite.goRight(); } // RIGHT
-            if (currentKeyStates[SDL_SCANCODE_W] && testSprite.getY() > 0) { testSprite.goUp(); }   // UP
-            if (currentKeyStates[SDL_SCANCODE_S] && testSprite.getY() < h - testSprite.getH()) { testSprite.goDown(); } // DOWN
-            // STOP  - Unrestricted Movement Keys
-        }
 
         // START - System Keys
         while ( SDL_PollEvent( &event ) != 0 ) { // If an event is encountered
@@ -162,22 +94,6 @@ int main(int argc, char* argv[]) {
                             if (windowed) { SDL_SetWindowFullscreen(window, SDL_FALSE); }
                             else { SDL_SetWindowFullscreen(window, SDL_TRUE); }
                             break; // END SDLK_F1 CASE
-                        case SDLK_a: // If 'a' key is pressed,
-                            if (testSprite.getX() > 0 && test == 0) { testSprite.goLeft(); } // LEFT
-                            break;
-                        case SDLK_d: // If 'd' key is pressed,
-                            if (testSprite.getX() < w - testSprite.getW() && test == 0) { testSprite.goRight(); } // RIGHT
-                            break;
-                        case SDLK_w: // If 'w' key is pressed,
-                            if (testSprite.getY() > 0 && test == 0) { testSprite.goUp(); }   // UP
-                            break;
-                        case SDLK_s: // If 's' key is pressed,
-                            if (testSprite.getY() < h - testSprite.getH() && test == 0) { testSprite.goDown(); } // DOWN
-                            break;
-                        case SDLK_z: // If 'z' key is pressed,
-                            if (test == 0) { test = 1; }
-                            else { test = 0; }
-                            break;
                             // STOP  - System/Window Changes From Key Press
                     }
                     break; // END SDL_KEYUP CASE
@@ -197,7 +113,6 @@ int main(int argc, char* argv[]) {
     // STOP  - Game Loop
 
     // Cleanup
-    CLEANUP_AND_QUIT:
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
