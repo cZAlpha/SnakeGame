@@ -5,6 +5,9 @@
 // START - Imports
 #include <iostream>
 #include <SDL.h>
+#include "Apple.h"
+#include "Snake.h"
+#include "Sprite.h"
 // STOP  - Imports
 
 // START - Namespaces
@@ -120,8 +123,7 @@ int main(int argc, char* argv[]) {
     // STOP  - Error Checking
 
     // START - Sprites
-    // Test Sprite
-    TestSprite testSprite("/Users/nbklaus21/Desktop/testSprite.bmp");
+    TestSprite testSprite("/Users/nbklaus21/Desktop/testSprite.bmp"); // Test Sprite
     // STOP  - Sprites
 
     // START - Game Loop
@@ -183,7 +185,7 @@ int main(int argc, char* argv[]) {
         } // END OF CHECKING FOR KEY PRESSES
         // STOP  - System Keys
 
-        SDL_SetRenderDrawColor(renderer, 20, 200, 20, 255); // Makes the screen blue with full opacity
+        SDL_SetRenderDrawColor(renderer, 20, 200, 20, 255); // Makes the screen green
         SDL_RenderClear(renderer);
 
         // Render TestSprite
