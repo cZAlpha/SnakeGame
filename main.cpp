@@ -172,7 +172,7 @@ int main(int argc, char* argv[]) {
                             if (test == 0) { test = 1; }
                             else { test = 0; }
                             break;
-                        // STOP  - System/Window Changes From Key Press
+                            // STOP  - System/Window Changes From Key Press
                     }
                     break; // END SDL_KEYUP CASE
             } // END SWITCH CASE LOGIC FLOW
