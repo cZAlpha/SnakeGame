@@ -20,25 +20,24 @@ int FPS = 60;
 
 
 // START - Classes
+// Classes
 class TestSprite {
 private:
     SDL_Texture* texture;
     SDL_Rect rect;
-    int movementAmount = 50; // number of pixels to move by when moving
+    int movementAmount = 50;
+
 public:
-    TestSprite(SDL_Renderer* renderer) {
-        // Create a surface for the sprite
-        SDL_Surface* surface = SDL_CreateRGBSurface(0, 10, 10, 32, 0, 0, 0, 0);
+    TestSprite(SDL_Renderer* renderer, const char* imagePath) {
+        // Load image as texture
+        SDL_Surface* surface = SDL_LoadBMP(imagePath);
         if (surface == nullptr) {
-            std::cerr << "Failed to create surface: " << SDL_GetError() << std::endl;
-            return; // Returns early to stop the constructor from causing further errors
+            cerr << "Failed to load image: " << SDL_GetError() << endl;
+            return;
         }
-
-        SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0, 50, 0)); // Fill the surface with green color
-
-        texture = SDL_CreateTextureFromSurface(renderer, surface); // Convert the surface to a texture
+        texture = SDL_CreateTextureFromSurface(renderer, surface);
         if (texture == nullptr) {
-            std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+            cerr << "Failed to create texture: " << SDL_GetError() << endl;
             SDL_FreeSurface(surface);
             return;
         }
@@ -49,10 +48,12 @@ public:
         rect.w = 50;
         rect.h = 50;
 
-        SDL_FreeSurface(surface); // Free the surface as it's no longer needed
+        SDL_FreeSurface(surface);
     }
 
-    ~TestSprite() { SDL_DestroyTexture(texture); } // Cleanup texture
+    ~TestSprite() { SDL_DestroyTexture(texture); }
+
+    void render(SDL_Renderer* renderer) { SDL_RenderCopy(renderer, texture, NULL, &rect); }
 
     // START - Movement Functions
     void goLeft() { rect.x -= movementAmount; } // Decrements the rectangle's x value
@@ -60,9 +61,6 @@ public:
     void goDown() { rect.y += movementAmount; } // Increments the rectangle's y value (ASSUMING: incrementing y value makes it go up)
     void goUp() { rect.y -= movementAmount; } // Decrements the rectangle's y value (ASSUMING: decrementing y value makes it go up)
     // STOP  - Movement Functions
-
-    // START - General Purpose Functions
-    void render(SDL_Renderer* renderer) { SDL_RenderCopy(renderer, texture, NULL, &rect); } // Render the texture
 
     // Getters
     int getX() { return rect.x; }
@@ -118,7 +116,8 @@ int main(int argc, char* argv[]) {
     // STOP  - Error Checking
 
     // START - Sprites
-    TestSprite testSprite(renderer); // Create TestSprite object
+    // Test Sprite
+    TestSprite testSprite(renderer, "/Users/nbklaus21/Desktop/testSprite.bmp");
     // STOP  - Sprites
 
     // START - Game Loop
@@ -183,8 +182,8 @@ int main(int argc, char* argv[]) {
         SDL_SetRenderDrawColor(renderer, 20, 200, 20, 255); // Makes the screen blue with full opacity
         SDL_RenderClear(renderer);
 
-        // Test Sprite
-        testSprite.render(renderer); // Render the sprite
+        // Render TestSprite
+        testSprite.render(renderer);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(fps); // updates every 10 ms which is
