@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
     // STOP  - Error Checking
 
     // START - Sprites
-    Snake testSnake(1,30,0, renderer); // Snake Sprite
+    Snake testSnake(1,50,0, renderer); // Snake Sprite
     Snake testSnake1(1,0,0, renderer); // Snake Sprite
     // STOP  - Sprites
 
@@ -110,6 +110,7 @@ int main(int argc, char* argv[]) {
         testSnake1.render(renderer);
 
         if ( testSnake.isCollidingWith(testSnake1) ) {
+            cout << "Sprites Are Colliding!" << endl;
             quit = 1;
         }
 

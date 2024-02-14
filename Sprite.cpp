@@ -54,13 +54,17 @@ Sprite::Sprite(const char* imagePath, SDL_Renderer* renderer) {
     void Sprite::render(SDL_Renderer* renderer) { SDL_RenderCopy(renderer, texture, NULL, &rect); } // Render
 
     // Getters
-    int Sprite::getX() { return rect.x; }
-    int Sprite::getY() { return rect.y; }
-    int Sprite::getW() { return rect.w; }
-    int Sprite::getH() { return rect.h; }
+    int Sprite::getX() const { return rect.x; }
+    int Sprite::getY() const { return rect.y; }
+    int Sprite::getW() const { return rect.w; }
+    int Sprite::getH() const { return rect.h; }
     // Setters
     void Sprite::setX(int x) { rect.x = x; }
     void Sprite::setY(int y) { rect.y = y; }
 
-
-bool Sprite::isCollidingWith(Sprite sprite) const  { return rect.x == sprite.getX() && rect.y == sprite.getY(); }
+    // Collision
+    bool Sprite::isCollidingWith(const Sprite& sprite) const {
+        SDL_Rect rectA = { rect.x, rect.y, rect.w, rect.h };
+        SDL_Rect rectB = { sprite.getX(), sprite.getY(), sprite.getW(), sprite.getH() };
+        return SDL_HasIntersection(&rectA, &rectB) == SDL_TRUE;
+    }

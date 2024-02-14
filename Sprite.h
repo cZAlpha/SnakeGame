@@ -25,16 +25,16 @@ public:
     void render(SDL_Renderer* renderer); // Render Sprite
 
     // Getters
-    int getX();
-    int getY();
-    int getW();
-    int getH();
+    int getX() const;
+    int getY() const;
+    int getW() const;
+    int getH() const;
 
     // Setters
     void setX(int x);
     void setY(int y);
 
-    bool isCollidingWith(Sprite sprite) const;
+    bool isCollidingWith(const Sprite& sprite) const;
 };
 // STOP - Sprite Class Header
 
