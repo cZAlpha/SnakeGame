@@ -23,10 +23,17 @@ public:
     Sprite(); // Default Constructor ; Should not really use this...
     Sprite(const char *imagePath, SDL_Renderer *renderer); // Custom Constructor ; Takes args of img path as char*
     void render(SDL_Renderer* renderer); // Render Sprite
-    int getX(); // Getters
+
+    // Getters
+    int getX();
     int getY();
     int getW();
     int getH();
+
+    // Setters
+    void setX(int x);
+    void setY(int y);
+
     bool isCollidingWith(Sprite sprite) const;
 };
 // STOP - Sprite Class Header

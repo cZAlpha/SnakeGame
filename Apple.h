@@ -5,7 +5,9 @@
 #ifndef APPLE_H
 #define APPLE_H
 
-class Apple {
+#include "Sprite.h" // Include parent class
+
+class Apple : public Sprite {
 private:
     int value;
     int x;
