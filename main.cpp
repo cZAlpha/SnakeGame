@@ -64,7 +64,8 @@ int main(int argc, char* argv[]) {
     // STOP  - Error Checking
 
     // START - Sprites
-    Sprite testSprite("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/testSprite.bmp", renderer); // Test Sprite
+    Sprite testSnake("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/snake_head_sprite.bmp", renderer); // Snake Sprite
+    Sprite testTest("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/testSprite.bmp", renderer); // Test Sprite
     // STOP  - Sprites
 
     // START - Game Loop
@@ -105,7 +106,8 @@ int main(int argc, char* argv[]) {
         SDL_RenderClear(renderer);
 
         // Render TestSprite
-        testSprite.render(renderer);
+        testSnake.render(renderer);
+        testTest.render(renderer);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(fps); // updates every 10 ms which is

@@ -58,3 +58,4 @@ Sprite::Sprite(const char* imagePath, SDL_Renderer* renderer) {
     int Sprite::getY() { return rect.y; }
     int Sprite::getW() { return rect.w; }
     int Sprite::getH() { return rect.h; }
+    bool Sprite::isCollidingWith(Sprite sprite) const  { return rect.x == sprite.getX() && rect.y == sprite.getY(); } // Use getter functions to access Apple's coordinates

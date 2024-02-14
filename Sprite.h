@@ -27,6 +27,7 @@ public:
     int getY();
     int getW();
     int getH();
+    bool isCollidingWith(Sprite sprite) const;
 };
 // STOP - Sprite Class Header
 
