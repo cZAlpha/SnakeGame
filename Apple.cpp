@@ -10,7 +10,7 @@ Apple::Apple() {
     this->setY(0);
 }
 
-Apple::Apple(int value, int x, int y, SDL_Renderer* renderer) : Sprite("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/testSprite.bmp", renderer) {
+Apple::Apple(int value, int x, int y, SDL_Renderer* renderer) : Sprite("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/apple_sprite.bmp", renderer) {
     if (value >= 1) { this->setValue(value); }
     this->setX(x);
     this->setY(y);
