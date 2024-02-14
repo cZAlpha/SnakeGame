@@ -27,8 +27,8 @@ Snake::Snake(int len, int x, int y, SDL_Renderer* renderer) : Sprite("/Users/nbk
     }
 
     void Snake::setLocation(int x, int y) {
-        this->x = x;
-        this->y = y;
+        this->setX(x);
+        this->setY(y);
     }
 
     int Snake::getLength() const {

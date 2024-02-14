@@ -15,10 +15,10 @@ private:
 
 public:
     Apple();
-    Apple(int len, int x, int y);
+    Apple(int value, int x, int y, SDL_Renderer* renderer);
     void setValue(int inputtedValue);
     void setLocation(int x, int y);
-    int getLength();
+    int getValue();
     void incrementLength();
     int getX() const; // Add getter function for x coordinate
     int getY() const; // Add getter function for y coordinate

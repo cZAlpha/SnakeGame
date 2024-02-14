@@ -65,7 +65,8 @@ int main(int argc, char* argv[]) {
 
     // START - Sprites
     Snake testSnake(1,50,0, renderer); // Snake Sprite
-    Snake testSnake1(1,0,0, renderer); // Snake Sprite
+    Snake testSnake1(1,0,0, renderer); // Snake1 Sprite
+    Apple testApple(1,50,50, renderer); // Apple Sprite
     // STOP  - Sprites
 
     // START - Game Loop
@@ -108,8 +109,9 @@ int main(int argc, char* argv[]) {
         // Render TestSprite
         testSnake.render(renderer);
         testSnake1.render(renderer);
+        testApple.render(renderer);
 
-        if ( testSnake.isCollidingWith(testSnake1) ) {
+        if ( testSnake.isCollidingWith(testSnake1) or testSnake.isCollidingWith(testApple) or testSnake1.isCollidingWith(testSnake) or testSnake1.isCollidingWith(testApple) ) {
             cout << "Sprites Are Colliding!" << endl;
             quit = 1;
         }
