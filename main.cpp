@@ -103,7 +103,7 @@ int main(int argc, char* argv[]) {
         } // END OF CHECKING FOR KEY PRESSES
         // STOP  - System Keys
 
-        SDL_SetRenderDrawColor(renderer, 20, 200, 20, 255); // Makes the screen green
+        SDL_SetRenderDrawColor(renderer, 43, 29, 20, 255); // Makes the screen green
         SDL_RenderClear(renderer);
 
         // Render TestSprite
