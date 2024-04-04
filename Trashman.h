@@ -6,17 +6,17 @@
 #define SNAKE_H
 
 #include "Sprite.h" // Include parent class
-#include "Apple.h" // Include Apple.h to use the Apple class
+#include "Trashbag.h" // Include Trashbag.h to use the Trashbag class
 
-class Snake : public Sprite {
+class Trashman : public Sprite {
 private:
     int length; // Length of snake (size)
     int x;       // X Coord
     int y;      // Y Coord
 
 public:
-    Snake(); // Default Constructor
-    Snake(int len, int x, int y, SDL_Renderer* renderer); // Custom Constructor
+    Trashman(); // Default Constructor
+    Trashman(int x, int y, SDL_Renderer* renderer); // Custom Constructor
 
     void setLength(int inputtedLength); // Setter for length
     void setLocation(int x, int y); // Setter for location

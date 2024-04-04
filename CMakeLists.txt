@@ -15,13 +15,13 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin") # Mac
     include_directories("/usr/local/include/SDL2") # Adjust this path according to your installation
 endif()
 
-# Files to make the executable 'Snake'
+# Files to make the executable 'Trashman'
 add_executable(Snake
         main.cpp
-        Apple.cpp
-        Apple.h
-        Snake.cpp
-        Snake.h
+        Trashbag.cpp
+        Trashbag.h
+        Trashman.cpp
+        Trashman.h
         Sprite.cpp
         Sprite.h
         )

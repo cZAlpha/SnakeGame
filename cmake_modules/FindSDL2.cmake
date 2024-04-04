@@ -116,7 +116,7 @@ IF(NOT SDL2_BUILDING_LIBRARY)
 ENDIF(NOT SDL2_BUILDING_LIBRARY)
 
 # SDL2 may require threads on your system.
-# The Apple build may not need an explicit flag because one of the
+# The Trashbag build may not need an explicit flag because one of the
 # frameworks may already provide it.
 # But for non-OSX systems, I will use the CMake Threads package.
 IF(NOT APPLE)
@@ -147,7 +147,7 @@ IF(SDL2_LIBRARY_TEMP)
         SET(SDL2_LIBRARY_TEMP ${SDL2_LIBRARY_TEMP} "-framework Cocoa")
     ENDIF(APPLE)
 
-    # For threads, as mentioned Apple doesn't need this.
+    # For threads, as mentioned Trashbag doesn't need this.
     # In fact, there seems to be a problem if I used the Threads package
     # and try using this line, so I'm just skipping it entirely for OS X.
     IF(NOT APPLE)

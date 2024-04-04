@@ -7,15 +7,15 @@
 
 #include "Sprite.h" // Include parent class
 
-class Apple : public Sprite {
+class Trashbag : public Sprite {
 private:
     int value;
     int x;
     int y;
 
 public:
-    Apple();
-    Apple(int value, int x, int y, SDL_Renderer* renderer);
+    Trashbag();
+    Trashbag(int value, int x, int y, SDL_Renderer* renderer);
     void setValue(int inputtedValue);
     void setLocation(int x, int y);
     int getValue();
