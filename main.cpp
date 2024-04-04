@@ -64,8 +64,7 @@ int main(int argc, char* argv[]) {
     // STOP  - Error Checking
 
     // START - Sprites
-    Snake testSnake(1,50,0, renderer); // Snake Sprite
-    Snake testSnake1(1,0,0, renderer); // Snake1 Sprite
+    Snake testSnake(1,500,10, renderer); // Snake Sprite
     Apple testApple(1,50,50, renderer); // Apple Sprite
     // STOP  - Sprites
 
@@ -84,21 +83,45 @@ int main(int argc, char* argv[]) {
                 case SDL_QUIT: // If the quit button is clicked, exit game
                     quit = 1;
                     break; // END SDL_QUIT CASE
-                case SDL_KEYUP: // If a key is pressed
+                case SDL_KEYUP: // If a key is pressed and released
                     switch (event.key.keysym.sym) { // Gets the specific key that is pressed
                         // START - System/Window Changes From Key Press
                         case SDLK_ESCAPE: // If the escape key is pressed, quit game
                             quit = 1;
-                            break; // END SDLK_ESCAPE CASE
+                            break;
                         case SDLK_F1: // If 'F1' key is pressed, go into fullscreen mode
-                            // THE FOLLOWING CODE CAUSES THE SCREEN TO BUG THE FUCK OUT (Only  n OSX)
+                            // THE FOLLOWING CODE CAUSES THE SCREEN TO BUG THE FUCK OUT (Only on OSX)
                             windowed = !windowed;
                             if (windowed) { SDL_SetWindowFullscreen(window, SDL_FALSE); }
                             else { SDL_SetWindowFullscreen(window, SDL_TRUE); }
                             break; // END SDLK_F1 CASE
-                            // STOP  - System/Window Changes From Key Press
-                    }
                     break; // END SDL_KEYUP CASE
+                    }    // STOP  - System/Window Changes From Key Press
+                case SDL_KEYDOWN: // If a key is pressed down
+                    switch (event.key.keysym.sym) { // Gets the specific key that is pressed
+                        case SDLK_w: // W key
+                            if ( testSnake.getX() >= 0 and testSnake.getY() >= 0 and testSnake.getX() <= w and testSnake.getY() <= h ) {
+                                testSnake.setLocation(testSnake.getX(), testSnake.getY() - 5); // Moves the snake up
+                            }
+                            break;
+                        case SDLK_s: // S key
+                            if ( testSnake.getX() >= 0 and testSnake.getY() >= 0 and testSnake.getX() <= w and testSnake.getY() <= h ) {
+                                testSnake.setLocation(testSnake.getX(), testSnake.getY() + 5); // Moves the snake up
+                            }
+                            break;
+                        case SDLK_a: // A key
+                            if ( testSnake.getX() >= 0 and testSnake.getY() >= 0 and testSnake.getX() <= w and testSnake.getY() <= h ) {
+                                testSnake.setLocation(testSnake.getX() - 5, testSnake.getY()); // Moves the snake up
+                            }
+                            break;
+                        case SDLK_d: // D key
+                            if ( testSnake.getX() >= 0 and testSnake.getY() >= 0 and testSnake.getX() <= w and testSnake.getY() <= h ) {
+                                testSnake.setLocation(testSnake.getX() + 5, testSnake.getY()); // Moves the snake up
+                            }
+                            break;
+                    }
+                    break; // END SDL_KEYDOWN CASE
+
             } // END SWITCH CASE LOGIC FLOW
         } // END OF CHECKING FOR KEY PRESSES
         // STOP  - System Keys
@@ -106,16 +129,25 @@ int main(int argc, char* argv[]) {
         SDL_SetRenderDrawColor(renderer, 43, 29, 20, 255); // Makes the screen green
         SDL_RenderClear(renderer);
 
-        // Render TestSprite
+        // Render Test Sprites
         testSnake.render(renderer);
-        testSnake1.render(renderer);
         testApple.render(renderer);
 
-        if ( testSnake.isCollidingWith(testSnake1) or testSnake.isCollidingWith(testApple) or testSnake1.isCollidingWith(testSnake) or testSnake1.isCollidingWith(testApple) ) {
+        // Collision
+        if ( testSnake.isCollidingWith(testApple) ) { // Snake and apple collison
             cout << "Sprites Are Colliding!" << endl;
-            quit = 1;
+            testApple.setLocation(0,0);
+        }
+        if ( testSnake.getX() < 0 or testSnake.getY() < 0 or testSnake.getX() > w or testSnake.getY() > h ) { // If snake is out of bounds
+            cout << "====================" << endl;
+            cout << "Snake out of bounds!" << endl;
+            cout << testSnake.getX() << endl;
+            cout << testSnake.getY() << endl;
+            cout << "====================" << endl;
+            testSnake.setLocation(0,0); // Puts snake at origin
         }
 
+        // Magical doohickey stuff
         SDL_RenderPresent(renderer);
         SDL_Delay(fps); // updates every 10 ms which is
     } // END OF GAME LOOP
