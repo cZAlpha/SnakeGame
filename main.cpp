@@ -10,6 +10,8 @@
 #include "Trashbag.h"
 #include "Trashman.h"
 #include "cstdlib"
+#include <thread> // For time
+#include <chrono> // For time
 // STOP  - Imports
 
 // START - Namespaces
@@ -45,6 +47,7 @@ int main(int argc, char* argv[]) {
     int fps = calculateMilliseconds(FPS);
     bool mainmenu = true; // main menu state var
     bool game = true; // game state var
+    bool win = false;
     SDL_Event event;
 
     Trashbag* trashbagArray[numOfTrashBags]; // Array to hold apples
@@ -83,6 +86,7 @@ int main(int argc, char* argv[]) {
     gamebackground.setY(0);
     Sprite mainmenutitle("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/mainmenutitle_sprite.bmp", renderer); // Main menu title Sprite
     Sprite mainmenuprompt("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/mainmenuprompt_sprite.bmp", renderer); // Main menu prompt Sprite
+    Sprite youwontext("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/youwon_sprite.bmp", renderer); // Main menu prompt Sprite
     Trashman trashman(500, 10, renderer); // Trashman Sprite
 
     // Instantiate and fill Trashbag array with Trashbags
@@ -127,6 +131,12 @@ int main(int argc, char* argv[]) {
                         case SDLK_RETURN: // If 'return' key is pressed, switch to game loop
                             cout << "return was pressed" << endl;
                             mainmenu = false;
+                            break; // END SDLK_RETURN CASE
+                        case SDLK_q: // If 'return' key is pressed, switch to game loop
+                            cout << "q was pressed, bypassing game to win screen..." << endl;
+                            mainmenu = false;
+                            game = false;
+                            win = true;
                             break; // END SDLK_RETURN CASE
                     }    // STOP  - System/Window Changes From Key Press
                     break; // END SDL_KEYDOWN CASE
@@ -224,7 +234,7 @@ int main(int argc, char* argv[]) {
             trashbagArray[i]->render(renderer);
         }
 
-        // Collision w/ Apples
+        // Collision w/ trash bags
         for (int i = 0; i < numOfTrashBags; ++i) {
             if ( trashman.isCollidingWith(*trashbagArray[i]) ) {
                 trashbagArray[i]->setLocation(-100, -100); // Does not delete apples but places them off screen
@@ -247,17 +257,82 @@ int main(int argc, char* argv[]) {
 
         // Check for console dialogue
         if ( numOfBagsAcquired >= numOfTrashBags ) {
+            win = true;
+            game = false;
             cout << "You won!" << endl;
+            this_thread::sleep_for(chrono::seconds(1)); // Sleep for 2 seconds after you win for dramatic effect
         }
-
         // Magical doohickey stuff
         SDL_RenderPresent(renderer);
         SDL_Delay(fps); // updates every 10 ms which is
     } // END OF GAME LOOP
     // STOP  - Game Loop
 
-    cout << "~|cleanup|~";
+    // START - Win Screen
+    cout << "~|win screen has started|~" << endl;
+    while (win) { // Win Screen Loop
+        SDL_PumpEvents(); // Update the state of all keys
+
+        // START - System Keys
+        while (SDL_PollEvent(&event) != 0) { // If an event is encountered
+            switch (event.type) { // Logic Flow using switch cases
+                case SDL_WINDOWEVENT_SIZE_CHANGED:  // Handles window size changing
+                    w = event.window.data1;
+                    h = event.window.data2;
+                    SDL_RenderPresent(renderer);
+                    break; // END SDL_WINDOWEVENT_SIZE_CHANGED CASE
+                case SDL_QUIT: // If the mainmenu button is clicked, exit game
+                    cout << "quit was pressed" << endl;
+                    win = false;
+                    break; // END SDL_QUIT CASE
+                case SDL_KEYUP: // If a key is pressed and released
+                    switch (event.key.keysym.sym) { // Gets the specific key that is pressed
+                        case SDLK_ESCAPE: // If the escape key is pressed, mainmenu game
+                            cout << "escape was pressed" << endl;
+                            win = false;
+                            break;
+                        case SDLK_F1: // If 'F1' key is pressed, go into fullscreen mode
+                            // THE FOLLOWING CODE CAUSES THE SCREEN TO BUG THE FUCK OUT (Only on OSX)
+                            windowed = !windowed;
+                            if (windowed) { SDL_SetWindowFullscreen(window, SDL_FALSE); }
+                            else { SDL_SetWindowFullscreen(window, SDL_TRUE); }
+                            break; // END SDLK_F1 CASE
+                        case SDLK_RETURN: // If 'return' key is pressed, switch to game loop
+                            cout << "return was pressed" << endl;
+                            win = false;
+                            break; // END SDLK_RETURN CASE
+                    }    // STOP  - System/Window Changes From Key Press
+                    break; // END SDL_KEYDOWN CASE
+            } // END SWITCH CASE LOGIC FLOW
+        } // END OF CHECKING FOR KEY PRESSES
+
+        // Background Rendering
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Makes the screen green
+        SDL_RenderClear(renderer);
+
+        // Put you won screen sprites on the screen
+        mainmenutitle.setX((w / 2) - (mainmenutitle.getW() / 2));
+        mainmenutitle.setY((h / 2) - (mainmenutitle.getH() / 2) - 100);
+        mainmenuprompt.setX((w / 2) - (mainmenuprompt.getW() / 2));
+        mainmenuprompt.setY((h / 2) - (mainmenuprompt.getH() / 2));
+        youwontext.setX((w / 2) - (youwontext.getW() / 2));
+        youwontext.setY((h / 2) - (youwontext.getH() / 2) - 50);
+        // Render Win Screen Sprites
+        mainmenutitle.render(renderer);
+        youwontext.render(renderer);
+        mainmenuprompt.render(renderer);
+
+        // Magical doohickey stuff
+        SDL_RenderPresent(renderer);
+        SDL_Delay(fps); // updates every 10 ms which is
+    }// STOP  - Win Screen Loop
+    cout << "~|win screen has ended|~" << endl;
+    // STOP - Win Screen
+
+
+
     // Cleanup
+    cout << "~|cleanup|~";
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
