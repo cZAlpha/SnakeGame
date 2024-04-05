@@ -24,7 +24,7 @@ SDL_Renderer* renderer;
 int FPS = 60;
 int w = 800; // Window Width
 int h = 600; // Window Height
-int numOfTrashBags = 15; // Number of trashbags to be instantiated
+int numOfTrashBags = 80; // Number of trashbags to be instantiated
 // STOP  - Global Variables
 
 
@@ -119,6 +119,8 @@ int main(int argc, char* argv[]) {
                     break; // END SDL_WINDOWEVENT_SIZE_CHANGED CASE
                 case SDL_QUIT: // If the mainmenu button is clicked, exit level1
                     mainmenu = false;
+                    level1 = false;
+                    level2 = false;
                     break; // END SDL_QUIT CASE
                 case SDL_KEYUP: // If a key is pressed and released
                     switch (event.key.keysym.sym) { // Gets the specific key that is pressed
@@ -126,6 +128,7 @@ int main(int argc, char* argv[]) {
                             cout << "escape was pressed" << endl;
                             mainmenu = false;
                             level1 = false;
+                            level2 = false;
                             break;
                         case SDLK_F1: // If 'F1' key is pressed, go into fullscreen mode
                             // THE FOLLOWING CODE CAUSES THE SCREEN TO BUG THE FUCK OUT (Only on OSX)
@@ -136,12 +139,6 @@ int main(int argc, char* argv[]) {
                         case SDLK_RETURN: // If 'return' key is pressed, switch to level1 loop
                             cout << "return was pressed" << endl;
                             mainmenu = false;
-                            break; // END SDLK_RETURN CASE
-                        case SDLK_q: // If 'return' key is pressed, switch to level1 loop
-                            cout << "q was pressed, bypassing level1 to win screen..." << endl;
-                            mainmenu = false;
-                            level1 = false;
-                            win = true;
                             break; // END SDLK_RETURN CASE
                     }    // STOP  - System/Window Changes From Key Press
                     break; // END SDL_KEYDOWN CASE
@@ -185,13 +182,15 @@ int main(int argc, char* argv[]) {
                     break; // END SDL_WINDOWEVENT_SIZE_CHANGED CASE
                 case SDL_QUIT: // If the mainmenu button is clicked, exit level1
                     level1 = false;
+                    level2 = false;
                     break; // END SDL_QUIT CASE
                 case SDL_KEYUP: // If a key is pressed and released
                     switch (event.key.keysym.sym) { // Gets the specific key that is pressed
                         // START - System/Window Changes From Key Press
-                        case SDLK_ESCAPE: // If the escape key is pressed, mainmenu level1
+                        case SDLK_ESCAPE: // If the escape key is pressed, exit
                             cout << "escape was pressed" << endl;
                             level1 = false;
+                            level2 = false;
                             break;
                         case SDLK_F1: // If 'F1' key is pressed, go into fullscreen mode
                             // THE FOLLOWING CODE CAUSES THE SCREEN TO BUG THE FUCK OUT (Only on OSX)
@@ -219,6 +218,26 @@ int main(int argc, char* argv[]) {
                             }
                             break;
                         case SDLK_d: // D key
+                            if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
+                                trashman.setLocation(trashman.getX() + moveAmount, trashman.getY()); // Moves the snake right
+                            }
+                            break;
+                        case SDLK_UP:
+                            if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
+                                trashman.setLocation(trashman.getX(), trashman.getY() - moveAmount); // Moves the snake up
+                            }
+                            break;
+                        case SDLK_DOWN:
+                            if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
+                                trashman.setLocation(trashman.getX(), trashman.getY() + moveAmount); // Moves the snake down
+                            }
+                            break;
+                        case SDLK_LEFT:
+                            if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
+                                trashman.setLocation(trashman.getX() - moveAmount, trashman.getY()); // Moves the snake left
+                            }
+                            break;
+                        case SDLK_RIGHT:
                             if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
                                 trashman.setLocation(trashman.getX() + moveAmount, trashman.getY()); // Moves the snake right
                             }
@@ -270,7 +289,7 @@ int main(int argc, char* argv[]) {
             win = true;
             level1 = false;
             cout << "You won!" << endl;
-            this_thread::sleep_for(chrono::seconds(1)); // Sleep for 2 seconds after you win for dramatic effect
+            this_thread::sleep_for(chrono::seconds(1/2)); // Sleep for 2 seconds after you win for dramatic effect
         }
         // Magical doohickey stuff
         SDL_RenderPresent(renderer);
@@ -404,6 +423,26 @@ int main(int argc, char* argv[]) {
                                 trashman.setLocation(trashman.getX() + moveAmount, trashman.getY()); // Moves the snake right
                             }
                             break;
+                        case SDLK_UP:
+                            if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
+                                trashman.setLocation(trashman.getX(), trashman.getY() - moveAmount); // Moves the snake up
+                            }
+                            break;
+                        case SDLK_DOWN:
+                            if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
+                                trashman.setLocation(trashman.getX(), trashman.getY() + moveAmount); // Moves the snake down
+                            }
+                            break;
+                        case SDLK_LEFT:
+                            if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
+                                trashman.setLocation(trashman.getX() - moveAmount, trashman.getY()); // Moves the snake left
+                            }
+                            break;
+                        case SDLK_RIGHT:
+                            if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
+                                trashman.setLocation(trashman.getX() + moveAmount, trashman.getY()); // Moves the snake right
+                            }
+                            break;
                     }
                     break; // END SDL_KEYDOWN CASE
 
@@ -452,7 +491,7 @@ int main(int argc, char* argv[]) {
             win = true;
             level1 = false;
             cout << "You won level 2!" << endl;
-            this_thread::sleep_for(chrono::seconds(1)); // Sleep for 2 seconds after you win for dramatic effect
+            this_thread::sleep_for(chrono::seconds(1/2)); // Sleep for 2 seconds after you win for dramatic effect
         }
         // Magical doohickey stuff
         SDL_RenderPresent(renderer);
