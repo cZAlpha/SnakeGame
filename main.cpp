@@ -22,6 +22,7 @@ SDL_Renderer* renderer;
 int FPS = 60;
 int w = 800; // Window Width
 int h = 600; // Window Height
+int numOfTrashBags = 15; // Number of trashbags to be instantiated
 // STOP  - Global Variables
 
 
@@ -37,15 +38,17 @@ int randomNum(int max) { // Function that generates a random number up to the nu
 
 // START - Main
 int main(int argc, char* argv[]) {
-    cout << "Main Function Has Started." << endl;
+    cout << "~|main function has started|~" << endl;
     srand(time(nullptr)); // Seed the random number generator with the current time
 
     // START - Init. Local Variables
     int fps = calculateMilliseconds(FPS);
-    int quit = 0;
+    bool mainmenu = true; // main menu state var
+    bool game = true; // game state var
     SDL_Event event;
 
-    Trashbag* trashbagArray[5]; // Array to hold apples
+    Trashbag* trashbagArray[numOfTrashBags]; // Array to hold apples
+    int numOfBagsAcquired = 0; // number of bags the user has acquired
     int moveAmount = 10;
     int windowed = 1; // Window flag, used for toggle window/fullscreen
     int test = 1; // Test flag, used to toggle restricted movement
@@ -74,176 +77,191 @@ int main(int argc, char* argv[]) {
     }
     // STOP  - Error Checking
 
-    // START - State Vars
-    bool inMainMenu = true;
-    bool startGame = false;
-    // STOP - State Vars
-
     // START - Sprites
+    Sprite gamebackground("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/gamebackground_sprite.bmp", renderer); // The sprite that acts as the background to the game
+    gamebackground.setX(0);
+    gamebackground.setY(0);
     Sprite mainmenutitle("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/mainmenutitle_sprite.bmp", renderer); // Main menu title Sprite
-
+    Sprite mainmenuprompt("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/mainmenuprompt_sprite.bmp", renderer); // Main menu prompt Sprite
     Trashman trashman(500, 10, renderer); // Trashman Sprite
 
     // Instantiate and fill Trashbag array with Trashbags
-    for (int i = 0; i < 5; i++) {
-        trashbagArray[i] = new Trashbag(1, randomNum(w - 50), randomNum(h - 50), renderer); // Dynamically allocate memory
+    for (int i = 0; i < numOfTrashBags; i++) {
+        int yPos = randomNum(h - 50);
+        if ( yPos < 80 ) {
+            yPos += 80;
+        }
+        trashbagArray[i] = new Trashbag(1, randomNum(w - 50), yPos, renderer); // Dynamically allocate memory
     }
     // STOP  - Sprites
 
-    // State checking
-    if (inMainMenu == true and startGame == false) { // If in main menu
-        // START - Main Menu
-        while (!quit) { // Main Menu Loop
-            SDL_PumpEvents(); // Update the state of all keys
+    // START - Main Menu
+    cout << "~|main menu has started|~" << endl;
+    while (mainmenu) { // Main Menu Loop
+        SDL_PumpEvents(); // Update the state of all keys
 
-            // START - System Keys
-            while (SDL_PollEvent(&event) != 0) { // If an event is encountered
-                switch (event.type) { // Logic Flow using switch cases
-                    case SDL_WINDOWEVENT_SIZE_CHANGED:  // Handles window size changing
-                        w = event.window.data1;
-                        h = event.window.data2;
-                        SDL_RenderPresent(renderer);
-                        break; // END SDL_WINDOWEVENT_SIZE_CHANGED CASE
-                    case SDL_QUIT: // If the quit button is clicked, exit game
-                        quit = 1;
-                        break; // END SDL_QUIT CASE
-                    case SDL_KEYUP: // If a key is pressed and released
-                        switch (event.key.keysym.sym) { // Gets the specific key that is pressed
-                            // START - System/Window Changes From Key Press
-                            case SDLK_ESCAPE: // If the escape key is pressed, quit game
-                                quit = 1;
-                                break;
-                            case SDLK_F1: // If 'F1' key is pressed, go into fullscreen mode
-                                // THE FOLLOWING CODE CAUSES THE SCREEN TO BUG THE FUCK OUT (Only on OSX)
-                                windowed = !windowed;
-                                if (windowed) { SDL_SetWindowFullscreen(window, SDL_FALSE); }
-                                else { SDL_SetWindowFullscreen(window, SDL_TRUE); }
-                                break; // END SDLK_F1 CASE
-                                break; // END SDL_KEYUP CASE
-                        }    // STOP  - System/Window Changes From Key Press
-                        break; // END SDL_KEYDOWN CASE
-                } // END SWITCH CASE LOGIC FLOW
-            } // END OF CHECKING FOR KEY PRESSES
+        // START - System Keys
+        while (SDL_PollEvent(&event) != 0) { // If an event is encountered
+            switch (event.type) { // Logic Flow using switch cases
+                case SDL_WINDOWEVENT_SIZE_CHANGED:  // Handles window size changing
+                    w = event.window.data1;
+                    h = event.window.data2;
+                    SDL_RenderPresent(renderer);
+                    break; // END SDL_WINDOWEVENT_SIZE_CHANGED CASE
+                case SDL_QUIT: // If the mainmenu button is clicked, exit game
+                    mainmenu = false;
+                    break; // END SDL_QUIT CASE
+                case SDL_KEYUP: // If a key is pressed and released
+                    switch (event.key.keysym.sym) { // Gets the specific key that is pressed
+                        case SDLK_ESCAPE: // If the escape key is pressed, mainmenu game
+                            cout << "escape was pressed" << endl;
+                            mainmenu = false;
+                            game = false;
+                            break;
+                        case SDLK_F1: // If 'F1' key is pressed, go into fullscreen mode
+                            // THE FOLLOWING CODE CAUSES THE SCREEN TO BUG THE FUCK OUT (Only on OSX)
+                            windowed = !windowed;
+                            if (windowed) { SDL_SetWindowFullscreen(window, SDL_FALSE); }
+                            else { SDL_SetWindowFullscreen(window, SDL_TRUE); }
+                            break; // END SDLK_F1 CASE
+                        case SDLK_RETURN: // If 'return' key is pressed, switch to game loop
+                            cout << "return was pressed" << endl;
+                            mainmenu = false;
+                            break; // END SDLK_RETURN CASE
+                    }    // STOP  - System/Window Changes From Key Press
+                    break; // END SDL_KEYDOWN CASE
+            } // END SWITCH CASE LOGIC FLOW
+        } // END OF CHECKING FOR KEY PRESSES
 
-            // Background Rendering
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Makes the screen green
-            SDL_RenderClear(renderer);
+        // Background Rendering
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Makes the screen green
+        SDL_RenderClear(renderer);
 
-            // Put main menu sprites on the screen
-            mainmenutitle.setX( (w/2) - (mainmenutitle.getW() / 2) );
-            mainmenutitle.setY( (h/2) - (mainmenutitle.getH() / 2) - 100 );
-            // Render Main menu Sprites
-            mainmenutitle.render(renderer);
+        // Put main menu sprites on the screen
+        mainmenutitle.setX((w / 2) - (mainmenutitle.getW() / 2));
+        mainmenutitle.setY((h / 2) - (mainmenutitle.getH() / 2) - 100);
+        mainmenuprompt.setX((w / 2) - (mainmenuprompt.getW() / 2));
+        mainmenuprompt.setY((h / 2) - (mainmenuprompt.getH() / 2) - 20);
+        // Render Main menu Sprites
+        mainmenutitle.render(renderer);
+        mainmenuprompt.render(renderer);
 
-            // Magical doohickey stuff
-            SDL_RenderPresent(renderer);
-            SDL_Delay(fps); // updates every 10 ms which is
-        }// STOP  - Main Menu Loop
-        // STOP - Main Menu
-        inMainMenu = false;
-        startGame = true;
-    }
-    else if (startGame == true and inMainMenu == false) { // If in game
-        // START - Game Loop
-        while (!quit) { // game loop
-            SDL_PumpEvents(); // Update the state of all keys
+        // Magical doohickey stuff
+        SDL_RenderPresent(renderer);
+        SDL_Delay(fps); // updates every 10 ms which is
+    }// STOP  - Main Menu Loop
+    cout << "~|main menu loop has ended|~" << endl;
+    // STOP - Main Menu
 
-            // START - System Keys
-            while ( SDL_PollEvent( &event ) != 0 ) { // If an event is encountered
-                switch (event.type) { // Logic Flow using switch cases
-                    case SDL_WINDOWEVENT_SIZE_CHANGED:  // Handles window size changing
-                        w = event.window.data1;
-                        h = event.window.data2;
-                        SDL_RenderPresent(renderer);
-                        break; // END SDL_WINDOWEVENT_SIZE_CHANGED CASE
-                    case SDL_QUIT: // If the quit button is clicked, exit game
-                        quit = 1;
-                        break; // END SDL_QUIT CASE
-                    case SDL_KEYUP: // If a key is pressed and released
-                        switch (event.key.keysym.sym) { // Gets the specific key that is pressed
-                            // START - System/Window Changes From Key Press
-                            case SDLK_ESCAPE: // If the escape key is pressed, quit game
-                                quit = 1;
-                                break;
-                            case SDLK_F1: // If 'F1' key is pressed, go into fullscreen mode
-                                // THE FOLLOWING CODE CAUSES THE SCREEN TO BUG THE FUCK OUT (Only on OSX)
-                                windowed = !windowed;
-                                if (windowed) { SDL_SetWindowFullscreen(window, SDL_FALSE); }
-                                else { SDL_SetWindowFullscreen(window, SDL_TRUE); }
-                                break; // END SDLK_F1 CASE
-                                break; // END SDL_KEYUP CASE
-                        }    // STOP  - System/Window Changes From Key Press
-                    case SDL_KEYDOWN: // If a key is pressed down
-                        switch (event.key.keysym.sym) { // Gets the specific key that is pressed
-                            case SDLK_w: // W key
-                                if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
-                                    trashman.setLocation(trashman.getX(), trashman.getY() - moveAmount); // Moves the snake up
-                                }
-                                break;
-                            case SDLK_s: // S key
-                                if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
-                                    trashman.setLocation(trashman.getX(), trashman.getY() + moveAmount); // Moves the snake down
-                                }
-                                break;
-                            case SDLK_a: // A key
-                                if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
-                                    trashman.setLocation(trashman.getX() - moveAmount, trashman.getY()); // Moves the snake left
-                                }
-                                break;
-                            case SDLK_d: // D key
-                                if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
-                                    trashman.setLocation(trashman.getX() + moveAmount, trashman.getY()); // Moves the snake right
-                                }
-                                break;
-                        }
-                        break; // END SDL_KEYDOWN CASE
+    // START - Game Loop
+    cout << "~|game loop has started|~" << endl;
+    while (game and numOfBagsAcquired < numOfTrashBags) { // game loop
+        SDL_PumpEvents(); // Update the state of all keys
 
-                } // END SWITCH CASE LOGIC FLOW
-            } // END OF CHECKING FOR KEY PRESSES
-            // STOP  - System Keys
+        // START - System Keys
+        while ( SDL_PollEvent( &event ) != 0 ) { // If an event is encountered
+            switch (event.type) { // Logic Flow using switch cases
+                case SDL_WINDOWEVENT_SIZE_CHANGED:  // Handles window size changing
+                    w = event.window.data1;
+                    h = event.window.data2;
+                    SDL_RenderPresent(renderer);
+                    break; // END SDL_WINDOWEVENT_SIZE_CHANGED CASE
+                case SDL_QUIT: // If the mainmenu button is clicked, exit game
+                    game = false;
+                    break; // END SDL_QUIT CASE
+                case SDL_KEYUP: // If a key is pressed and released
+                    switch (event.key.keysym.sym) { // Gets the specific key that is pressed
+                        // START - System/Window Changes From Key Press
+                        case SDLK_ESCAPE: // If the escape key is pressed, mainmenu game
+                            cout << "escape was pressed" << endl;
+                            game = false;
+                            break;
+                        case SDLK_F1: // If 'F1' key is pressed, go into fullscreen mode
+                            // THE FOLLOWING CODE CAUSES THE SCREEN TO BUG THE FUCK OUT (Only on OSX)
+                            windowed = !windowed;
+                            if (windowed) { SDL_SetWindowFullscreen(window, SDL_FALSE); }
+                            else { SDL_SetWindowFullscreen(window, SDL_TRUE); }
+                            break; // END SDLK_F1 CASE
+                            break; // END SDL_KEYUP CASE
+                    }    // STOP  - System/Window Changes From Key Press
+                case SDL_KEYDOWN: // If a key is pressed down
+                    switch (event.key.keysym.sym) { // Gets the specific key that is pressed
+                        case SDLK_w: // W key
+                            if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
+                                trashman.setLocation(trashman.getX(), trashman.getY() - moveAmount); // Moves the snake up
+                            }
+                            break;
+                        case SDLK_s: // S key
+                            if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
+                                trashman.setLocation(trashman.getX(), trashman.getY() + moveAmount); // Moves the snake down
+                            }
+                            break;
+                        case SDLK_a: // A key
+                            if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
+                                trashman.setLocation(trashman.getX() - moveAmount, trashman.getY()); // Moves the snake left
+                            }
+                            break;
+                        case SDLK_d: // D key
+                            if (trashman.getX() >= 0 and trashman.getY() >= 0 and trashman.getX() <= w and trashman.getY() <= h ) {
+                                trashman.setLocation(trashman.getX() + moveAmount, trashman.getY()); // Moves the snake right
+                            }
+                            break;
+                    }
+                    break; // END SDL_KEYDOWN CASE
 
-            SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255); // Makes the screen green
-            SDL_RenderClear(renderer);
+            } // END SWITCH CASE LOGIC FLOW
+        } // END OF CHECKING FOR KEY PRESSES
+        // STOP  - System Keys
 
-            // Render Test Sprites
-            trashman.render(renderer);
-            // Render all apples
-            for (int i = 0; i < 5; ++i) {
-                trashbagArray[i]->render(renderer);
+        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255); // Screen background color
+        SDL_RenderClear(renderer);
+        gamebackground.render(renderer); // Renders the background
+
+        // Render Trashman Sprite
+        trashman.render(renderer);
+        // Render all apples
+        for (int i = 0; i < numOfTrashBags; ++i) {
+            trashbagArray[i]->render(renderer);
+        }
+
+        // Collision w/ Apples
+        for (int i = 0; i < numOfTrashBags; ++i) {
+            if ( trashman.isCollidingWith(*trashbagArray[i]) ) {
+                trashbagArray[i]->setLocation(-100, -100); // Does not delete apples but places them off screen
+                numOfBagsAcquired++;
             }
+        }
+        // Out of Bounds Collision w/ Trashman
+        if (trashman.getX() < 0 ) {
+            trashman.setLocation(w - trashman.getW(), trashman.getY()); // Puts snake at left side of screen
+        }
+        if (trashman.getY() < 0 ) { // If snake is out of bounds on top of screen
+            trashman.setLocation(trashman.getX(), h - trashman.getH()); // Puts snake at left side of screen
+        }
+        if (trashman.getX() > (w - trashman.getW()) ) { // If snake is out of bounds on right side
+            trashman.setLocation(0, trashman.getY()); // Puts snake at left side of screen
+        }
+        if (trashman.getY() > (h - trashman.getH()) ) { // If snake is out of bounds on bottom
+            trashman.setLocation(trashman.getX(), 0); // Puts snake at top of screen
+        }
 
-            // Collision w/ Apples
-            for (int i = 0; i < 5; ++i) {
-                if ( trashman.isCollidingWith(*trashbagArray[i]) ) {
-                    trashbagArray[i]->setLocation(0, 0);
-                }
-            }
-            // Out of Bounds Collision w/ Trashman
-            if (trashman.getX() < 0 ) {
-                trashman.setLocation(w - trashman.getW(), trashman.getY()); // Puts snake at left side of screen
-            }
-            if (trashman.getY() < 0 ) { // If snake is out of bounds on top of screen
-                trashman.setLocation(trashman.getX(), h - trashman.getH()); // Puts snake at left side of screen
-            }
-            if (trashman.getX() > (w - trashman.getW()) ) { // If snake is out of bounds on right side
-                trashman.setLocation(0, trashman.getY()); // Puts snake at left side of screen
-            }
-            if (trashman.getY() > (h - trashman.getH()) ) { // If snake is out of bounds on bottom
-                trashman.setLocation(trashman.getX(), 0); // Puts snake at top of screen
-            }
+        // Check for console dialogue
+        if ( numOfBagsAcquired >= numOfTrashBags ) {
+            cout << "You won!" << endl;
+        }
 
-            // Magical doohickey stuff
-            SDL_RenderPresent(renderer);
-            SDL_Delay(fps); // updates every 10 ms which is
-        } // END OF GAME LOOP
-        // STOP  - Game Loop
+        // Magical doohickey stuff
+        SDL_RenderPresent(renderer);
+        SDL_Delay(fps); // updates every 10 ms which is
+    } // END OF GAME LOOP
+    // STOP  - Game Loop
 
-        // Cleanup
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-
-        return 0;
-    }
+    cout << "~|cleanup|~";
+    // Cleanup
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    cout << "~|shutting down|~" << endl;
+    return 0;
 }
 // STOP  - Main
