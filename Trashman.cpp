@@ -1,10 +1,10 @@
 //
-// Created by cZAlpha on 2/10/2024.
+// Created by Noah Klaus on 2/10/2024.
 //
 
 #include "Trashman.h"
-#include <SDL.h>
 #include "Sprite.h"
+#include <SDL.h>
 
 Trashman::Trashman() : Sprite() { // Default constructor
     length = 1;

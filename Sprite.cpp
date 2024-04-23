@@ -68,3 +68,12 @@ Sprite::Sprite(const char* imagePath, SDL_Renderer* renderer) {
         SDL_Rect rectB = { sprite.getX(), sprite.getY(), sprite.getW(), sprite.getH() };
         return SDL_HasIntersection(&rectA, &rectB) == SDL_TRUE;
     }
+
+    // Destructor
+    Sprite::~Sprite() {
+        cout << "Sprite is being destroyed" << endl; // console output
+        if (texture != nullptr) { // Ensures deletion of SDL texture
+            SDL_DestroyTexture(texture);
+            texture = nullptr;
+        }
+    }

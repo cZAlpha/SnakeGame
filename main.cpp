@@ -24,12 +24,17 @@ SDL_Renderer* renderer;
 int FPS = 60;
 int w = 800; // Window Width
 int h = 600; // Window Height
-int numOfTrashBags = 80; // Number of trashbags to be instantiated
+int numOfTrashBags = 30; // Number of trashbags to be instantiated
 // STOP  - Global Variables
 
 
 // START - Functions
-int calculateMilliseconds(int desiredFPS) { return 1000 / desiredFPS; }
+int calculateMilliseconds(int desiredFPS = 60) {
+    if (desiredFPS != 0) {
+        return 1000 / desiredFPS;
+    } else {
+        return 0; // Handle zero case to avoid error
+    }}
 
 int randomNum(int max) { // Function that generates a random number up to the number inputted as an argument (max)
     int randomNum = rand() % max; // Generate a random number between 0 and max
@@ -295,6 +300,7 @@ int main(int argc, char* argv[]) {
         SDL_RenderPresent(renderer);
         SDL_Delay(fps); // updates every 10 ms which is
     } // END OF GAME LOOP
+    cout << "~|level1 loop has ended|~" << endl;
     // STOP  - Level 1 Game Loop
 
     // START - Win Screen
@@ -497,6 +503,7 @@ int main(int argc, char* argv[]) {
         SDL_RenderPresent(renderer);
         SDL_Delay(fps); // updates every 10 ms which is
     } // END OF GAME LOOP
+    cout << "~|level2 loop has ended|~" << endl;
     // STOP  - Level 2 Game Loop
 
     // START - Win Screen
@@ -561,7 +568,12 @@ int main(int argc, char* argv[]) {
     // STOP - Win Screen
 
     // Cleanup
-    cout << "~|cleanup|~";
+    cout << "~|cleanup|~" << endl;
+    // Free dynamically allocated memory
+    for (int i = 0; i < numOfTrashBags; ++i) {
+        delete trashbagArray[i];
+    }
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

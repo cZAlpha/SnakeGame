@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.27)
-project(Snake)
+project(Trash)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake_modules)
@@ -16,7 +16,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin") # Mac
 endif()
 
 # Files to make the executable 'Trashman'
-add_executable(Snake
+add_executable(Trash
         main.cpp
         Trashbag.cpp
         Trashbag.h

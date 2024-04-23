@@ -1,12 +1,15 @@
 //
-// Created by cZAlpha on 2/10/2024.
+// Created by Noah Klaus on 2/10/2024.
 //
 
 #include "Trashbag.h"
+#include "Sprite.h"
+#include <SDL.h>
+#include <iostream>
 
-Trashbag::Trashbag() {
-    this->setX(0);
-    this->setY(0);
+using namespace std;
+
+Trashbag::Trashbag(): x(0), y(0) {
 }
 
 Trashbag::Trashbag(int x, int y, SDL_Renderer* renderer) : Sprite("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/trashbag_sprite.bmp", renderer) {
@@ -19,4 +22,12 @@ Trashbag::Trashbag(int x, int y, SDL_Renderer* renderer) : Sprite("/Users/nbklau
         this->setY(y);
     }
 
-    void Trashbag::incrementLength() { value++; }
+void Trashbag::render(SDL_Renderer* renderer) {
+    // Custom rendering for Trashbag...
+    Sprite::render(renderer); // Call base class render method
+}
+
+Trashbag::~Trashbag() {
+    // Destructor
+    cout << "Trashbag is being destroyed" << endl;
+}

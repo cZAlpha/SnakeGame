@@ -1,12 +1,11 @@
 //
-// Created by cZAlpha on 2/10/2024.
+// Created by Noah Klaus on 2/10/2024.
 //
 
-#ifndef SNAKE_H
-#define SNAKE_H
+#ifndef TRASHMAN_H
+#define TRASHMAN_H
 
 #include "Sprite.h" // Include parent class
-#include "Trashbag.h" // Include Trashbag.h to use the Trashbag class
 
 class Trashman : public Sprite {
 private:
@@ -24,4 +23,4 @@ public:
     void incrementLength(); // Increment length
 };
 
-#endif // SNAKE_H
+#endif // TRASHMAN_H

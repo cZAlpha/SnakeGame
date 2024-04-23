@@ -1,11 +1,12 @@
 //
-// Created by Parents on 2/10/2024.
+// Created by Noah Klaus on 2/10/2024.
 //
 
-#ifndef APPLE_H
-#define APPLE_H
+#ifndef TRASHBAG_H
+#define TRASHBAG_H
 
 #include "Sprite.h" // Include parent class
+
 
 class Trashbag : public Sprite {
 private:
@@ -17,7 +18,11 @@ public:
     Trashbag();
     Trashbag(int x, int y, SDL_Renderer* renderer);
     void setLocation(int x, int y);
-    void incrementLength();
+
+    virtual ~Trashbag();
+
+    // Override render method
+    virtual void render(SDL_Renderer* renderer) override;
 };
 
-#endif // APPLE_H
+#endif // TRASHBAG_H
