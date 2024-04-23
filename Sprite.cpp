@@ -51,6 +51,13 @@ Sprite::Sprite(const char* imagePath, SDL_Renderer* renderer) {
     SDL_FreeSurface(surface);
 } // Custom Constructor, takes args of img path as char*
 
+// Overloaded constructor with width and height to meet requirements
+Sprite::Sprite(int width, int height, SDL_Renderer *renderer) {
+    // Initialize texture with blank surface of given dimensions
+    // Initialize other variables
+    std::cout << "Creating Sprite with width: " << width << ", height: " << height << std::endl;
+}
+
     void Sprite::render(SDL_Renderer* renderer) { SDL_RenderCopy(renderer, texture, NULL, &rect); } // Render
 
     // Getters

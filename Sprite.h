@@ -22,6 +22,7 @@ private:
 public:
     Sprite(); // Default Constructor ; Should not really use this...
     Sprite(const char *imagePath, SDL_Renderer *renderer); // Custom Constructor ; Takes args of img path as char*
+    Sprite(int width, int height, SDL_Renderer *renderer); // Overloaded constructor to meet requirements
     virtual void render(SDL_Renderer* renderer); // Render Sprite
 
     // Getters
