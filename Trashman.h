@@ -9,7 +9,7 @@
 
 class Trashman : public Sprite {
 private:
-    int length; // Length of snake (size)
+    static int trash; // # of trashbags accrued by given trashman
     int x;       // X Coord
     int y;      // Y Coord
 
@@ -17,10 +17,10 @@ public:
     Trashman(); // Default Constructor
     Trashman(int x, int y, SDL_Renderer* renderer); // Custom Constructor
 
-    void setLength(int inputtedLength); // Setter for length
+    void setTrash(int inputtedTrash); // Setter for trashbags collected
     void setLocation(int x, int y); // Setter for location
-    int getLength() const; // Getter for length
-    void incrementLength(); // Increment length
+    int getTrash() const; // Getter for trash
+    void incrementTrash(); // Increment length
 };
 
 #endif // TRASHMAN_H

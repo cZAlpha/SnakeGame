@@ -6,8 +6,10 @@
 #include "Sprite.h"
 #include <SDL.h>
 
+int Trashman::trash = 0; // Define the static member variable trash
+
 Trashman::Trashman() : Sprite() { // Default constructor
-    length = 1;
+    trash = 0;
     x = 0;
     y = 0;
 }
@@ -17,9 +19,9 @@ Trashman::Trashman(int x, int y, SDL_Renderer* renderer) : Sprite("/Users/nbklau
     this->setY(y);
 }
 
-    void Trashman::setLength(int inputtedLength) {
-        if (inputtedLength >= 1) {
-            length = inputtedLength;
+    void Trashman::setTrash(int inputtedTrash) {
+        if (inputtedTrash >= 1) {
+            trash = inputtedTrash;
         }
     }
 
@@ -28,11 +30,11 @@ Trashman::Trashman(int x, int y, SDL_Renderer* renderer) : Sprite("/Users/nbklau
         this->setY(y);
     }
 
-    int Trashman::getLength() const {
-        return length;
+    int Trashman::getTrash() const {
+        return trash;
     }
 
-    void Trashman::incrementLength() {
-        length++;
+    void Trashman::incrementTrash() {
+        trash++;
     }
 
