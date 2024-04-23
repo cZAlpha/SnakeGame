@@ -10,7 +10,7 @@
 
 class Trashbag : public Sprite {
 private:
-    int value;
+    const int value;
     int x;
     int y;
 
@@ -18,6 +18,7 @@ public:
     Trashbag();
     Trashbag(int x, int y, SDL_Renderer* renderer);
     void setLocation(int x, int y);
+    void setValue(int setValue);
 
     virtual ~Trashbag();
 

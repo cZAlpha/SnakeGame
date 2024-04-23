@@ -9,10 +9,10 @@
 
 using namespace std;
 
-Trashbag::Trashbag(): x(0), y(0) {
+Trashbag::Trashbag(): value(1), x(0), y(0) {
 }
 
-Trashbag::Trashbag(int x, int y, SDL_Renderer* renderer) : Sprite("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/trashbag_sprite.bmp", renderer) {
+Trashbag::Trashbag(int x, int y, SDL_Renderer* renderer) : Sprite("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/trashbag_sprite.bmp", renderer), value(1) {
     this->setX(x);
     this->setY(y);
 }
@@ -22,10 +22,10 @@ Trashbag::Trashbag(int x, int y, SDL_Renderer* renderer) : Sprite("/Users/nbklau
         this->setY(y);
     }
 
-void Trashbag::render(SDL_Renderer* renderer) {
-    // Custom rendering for Trashbag...
-    Sprite::render(renderer); // Call base class render method
-}
+    void Trashbag::render(SDL_Renderer* renderer) {
+        // Custom rendering for Trashbag...
+        Sprite::render(renderer); // Call base class render method
+    }
 
 Trashbag::~Trashbag() {
     // Destructor
