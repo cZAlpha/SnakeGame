@@ -24,6 +24,8 @@ add_executable(Trash
         Trashman.h
         Sprite.cpp
         Sprite.h
-        )
+        Tracker.h
+        Tracker.cpp
+)
 
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY})

@@ -78,7 +78,7 @@ Sprite::Sprite(int width, int height, SDL_Renderer *renderer) {
 
     // Destructor
     Sprite::~Sprite() {
-        cout << "Sprite is being destroyed" << endl; // console output
+        cout << "-d S" << endl; // console output
         if (texture != nullptr) { // Ensures deletion of SDL texture
             SDL_DestroyTexture(texture);
             texture = nullptr;

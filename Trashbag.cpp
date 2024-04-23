@@ -34,5 +34,5 @@ Trashbag::Trashbag(int x, int y, SDL_Renderer* renderer) : Sprite("/Users/nbklau
 
 Trashbag::~Trashbag() {
     // Destructor
-    cout << "Trashbag is being destroyed" << endl;
+    cout << "-d TB" << endl;
 }
