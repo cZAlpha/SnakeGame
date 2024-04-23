@@ -9,6 +9,7 @@
 #include "Sprite.h"
 #include "Trashbag.h"
 #include "Trashman.h"
+#include "Tracker.h"
 #include "cstdlib"
 #include <thread> // For time
 #include <chrono> // For time
@@ -24,7 +25,7 @@ SDL_Renderer* renderer;
 int FPS = 60;
 int w = 800; // Window Width
 int h = 600; // Window Height
-int numOfTrashBags = 30; // Number of trashbags to be instantiated
+int numOfTrashBags = 1; // Number of trashbags to be instantiated
 // STOP  - Global Variables
 
 
@@ -97,6 +98,9 @@ int main(int argc, char* argv[]) {
     Sprite mainmenuprompt("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/mainmenuprompt_sprite.bmp", renderer); // Main menu prompt Sprite
     Sprite youwontext("/Users/nbklaus21/CLionProjects/SnakeGame/Assets/youwon_sprite.bmp", renderer); // Main menu prompt Sprite
     Trashman trashman(500, 10, renderer); // Trashman Sprite
+
+    // Tracker object instantiation
+    Tracker tracker;
 
     // Instantiate and fill Trashbag array with Trashbags
     for (int i = 0; i < numOfTrashBags; i++) {
@@ -273,6 +277,7 @@ int main(int argc, char* argv[]) {
                 cout << "Trash bag acquired" << endl;
                 trashbagArray[i]->setLocation(level1bagstorageXPos, level1bagstorageYPos); // places trash in trash can
                 numOfBagsAcquired++;
+                trashman.incrementTrash();
             }
         }
         // Out of Bounds Collision w/ Trashman
@@ -300,6 +305,9 @@ int main(int argc, char* argv[]) {
         SDL_RenderPresent(renderer);
         SDL_Delay(fps); // updates every 10 ms which is
     } // END OF GAME LOOP
+    // After level 1 ends
+    int level1Trash = trashman.getTrash(); // Assuming getTrash() returns an integer
+    tracker.append(1, level1Trash);
     cout << "~|level1 loop has ended|~" << endl;
     // STOP  - Level 1 Game Loop
 
@@ -503,6 +511,9 @@ int main(int argc, char* argv[]) {
         SDL_RenderPresent(renderer);
         SDL_Delay(fps); // updates every 10 ms which is
     } // END OF GAME LOOP
+    // After level 2 ends
+    int level2Trash = trashman.getTrash(); // Assuming getTrash() returns an integer
+    tracker.append(2, level2Trash);
     cout << "~|level2 loop has ended|~" << endl;
     // STOP  - Level 2 Game Loop
 
@@ -567,11 +578,15 @@ int main(int argc, char* argv[]) {
     cout << "~|win screen has ended|~" << endl;
     // STOP - Win Screen
 
+    // Tracker Status Update To Console
+    tracker.printStatus();
+
     // Cleanup
     cout << "~|cleanup|~" << endl;
     // Free dynamically allocated memory
     for (int i = 0; i < numOfTrashBags; ++i) {
         delete trashbagArray[i];
+        trashbagArray[i] = nullptr;
     }
 
     SDL_DestroyRenderer(renderer);
