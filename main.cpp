@@ -25,7 +25,7 @@ SDL_Renderer* renderer;
 int FPS = 60;
 int w = 800; // Window Width
 int h = 600; // Window Height
-int numOfTrashBags = 1; // Number of trashbags to be instantiated
+int numOfTrashBags = 30; // Number of trashbags to be instantiated
 // STOP  - Global Variables
 
 
@@ -61,7 +61,6 @@ int main(int argc, char* argv[]) {
     int numOfBagsAcquired = 0; // number of bags the user has acquired
     int moveAmount = 10;
     int windowed = 1; // Window flag, used for toggle window/fullscreen
-    int test = 1; // Test flag, used to toggle restricted movement
 
     int result = SDL_Init(SDL_INIT_EVERYTHING);
     if (result < 0) return -1;
