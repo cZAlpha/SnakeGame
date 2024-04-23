@@ -22,6 +22,11 @@ Trashbag::Trashbag(int x, int y, SDL_Renderer* renderer) : Sprite("/Users/nbklau
         this->setY(y);
     }
 
+    Trashbag& Trashbag::operator+(const Trashbag& other) {
+        // Perform addition operation here if needed
+        return *this; // Return the first Trashbag
+    }
+
     void Trashbag::render(SDL_Renderer* renderer) {
         // Custom rendering for Trashbag...
         Sprite::render(renderer); // Call base class render method

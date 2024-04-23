@@ -20,6 +20,8 @@ public:
     void setLocation(int x, int y);
     void setValue(int setValue);
 
+    Trashbag& operator+(const Trashbag& other); // Operator as per requirement
+
     virtual ~Trashbag();
 
     // Override render method
